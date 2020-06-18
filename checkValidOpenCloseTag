@@ -1,0 +1,31 @@
+// check valid open end tag, allowed characters [({})]
+// example [{()}] => true, [(}{)] => false
+const checkCloseEndTag = str => {
+    const arrCharacters = str.split('')
+    const openTags = '[({'
+    const closeTags = '})]'
+    let result = (str.length % 2 === 0) && (arrCharacters.filter(char => openTags.includes(char)).length === arrCharacters.filter(char => closeTags.includes(char)).length)
+    if (!result) return false
+    for (let index = 0; index < str.length; index++) {
+        let char = str[index]
+        if (closeTags.indexOf(char) > -1) { // nếu là close tag thì check open tag đối xứng hợp lệ hay không
+            if (char === '}' && (str[str.length - index - 1] != '{')) {
+                result = false
+                break
+            } else if (char === ')' && (str[str.length - index - 1] != '(')) {
+                result = false
+                break
+            } else if (char === ']' && (str[str.length - index - 1] != '[')) {
+                result = false
+                break
+            }
+        }
+    }
+    return result
+}
+
+console.log(checkCloseEndTag('[]'))
+console.log(checkCloseEndTag('[(]]'))
+console.log(checkCloseEndTag('[{}]'))
+console.log(checkCloseEndTag('[({})]'))
+console.log(checkCloseEndTag(''))
